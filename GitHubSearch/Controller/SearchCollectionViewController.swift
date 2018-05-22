@@ -19,6 +19,7 @@ class SearchCollectionViewController: UIViewController {
     var searchSettings = SearchResult()
     var seachingPage = 1
     var isBatchFetching = false
+    var noResults = false
     
     var repos: [GithubRepo]! {
         didSet{
@@ -28,7 +29,6 @@ class SearchCollectionViewController: UIViewController {
     
     fileprivate(set) var state: State = .notSearchedYet
     fileprivate var dataTask: DataRequest? = nil
-    
     
     /// TODO: - abstract away all Searchung to Object
 
@@ -84,6 +84,7 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionShow", for: indexPath) as! ShowCollectionCell
+        
         cell.repo = repos[indexPath.row]
         
         transform(cell: cell)
@@ -99,7 +100,7 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
 extension SearchCollectionViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if repos != nil {
+        if repos != nil && !noResults {
             let lastItem = repos.count - 5
             if indexPath.row == lastItem {
                 doSearch()
@@ -165,6 +166,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             
                             if (response.result.error! as NSError).code == -999 {
                                 print("request cancelled")
+                                self?.noResults = true
                             } else {
                                 networkError(response.result.error!)
                             }

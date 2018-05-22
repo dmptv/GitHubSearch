@@ -11,8 +11,8 @@ import UIKit
 import Alamofire
 
 extension UIImageView {
-    func downloadImage(from url: String) {
-        Alamofire.request(url).downloadProgress { progress in
+    func downloadImage(from url: String) -> DataRequest {
+        let downloadTask = Alamofire.request(url).downloadProgress { progress in
             //add code for progress of the image loading
             }
             .responseData { response in
@@ -22,5 +22,6 @@ extension UIImageView {
                     self.image = #imageLiteral(resourceName: "No_image_available")
                 }
         }
+        return downloadTask
     }
 }

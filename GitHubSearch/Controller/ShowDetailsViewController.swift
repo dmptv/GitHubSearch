@@ -21,13 +21,16 @@ class ShowDetailsViewController: UIViewController {
     @IBOutlet weak var closeBtn: UIButton!
     
     @IBOutlet weak var containerView: SpringView!
-    
+    fileprivate var downloadTask: DataRequest?
     
     var repo: GithubRepo!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        downloadTask?.cancel()
+        downloadTask = nil
+        
         populateView()
     }
     
@@ -44,7 +47,7 @@ class ShowDetailsViewController: UIViewController {
     
     private func populateView() {
         if let ownerAvatarURL = repo.ownerAvatarURL {
-            repoImageView.downloadImage(from: ownerAvatarURL)
+            downloadTask = repoImageView.downloadImage(from: ownerAvatarURL)
         }
         
         repoName.text = repo.name
@@ -55,9 +58,7 @@ class ShowDetailsViewController: UIViewController {
 
     @IBAction func xPressed(_ sender: UIButton) {
         animateView(with: "zoomOut")
-        containerView.animateNext {
-            self.dismiss(animated: false, completion: nil)
-        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     
