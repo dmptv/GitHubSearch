@@ -17,14 +17,16 @@ class GithubCell: UITableViewCell {
     @IBOutlet weak var starCountLabel: UILabel!
     
     
-    var repo: GithubRepo! {
+    var repo: GithubRepo? {
         didSet{
-            projectLabel.text = repo.name
-            authorLabel.text = "Created by "+repo.ownerHandle!
-            starCountLabel.text = "\(repo.stars!)"
-            
-            if let ownerAvatarURL = repo.ownerAvatarURL {
-                authorImageView.setImageWith(URL(string: ownerAvatarURL)!)
+            if let repo = repo {
+                projectLabel.text = repo.name
+                authorLabel.text = "Created by "+repo.ownerHandle!
+                starCountLabel.text = "\(repo.stars!)"
+                
+                if let ownerAvatarURL = repo.ownerAvatarURL {
+                    authorImageView.setImageWith(URL(string: ownerAvatarURL)!)
+                }
             }
         }
     }

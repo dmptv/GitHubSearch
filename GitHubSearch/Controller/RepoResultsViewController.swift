@@ -22,6 +22,7 @@ class RepoResultsViewController: UIViewController {
     
     enum RepoVCCells: String {
         case githubCell = "githubCell"
+        case loadingCell = "loadingCell"
     }
     
     @IBOutlet weak var tableView: UITableView! {
@@ -55,7 +56,7 @@ class RepoResultsViewController: UIViewController {
         super.viewDidLoad()
         
         let loadingNib = UINib(nibName: "LoadingCell", bundle: nil)
-        tableView.register(loadingNib, forCellReuseIdentifier: "loadingCell")
+        tableView.register(loadingNib, forCellReuseIdentifier: RepoVCCells.loadingCell.rawValue)
         
         setupSearchBar()
     }
@@ -85,13 +86,15 @@ class RepoResultsViewController: UIViewController {
                 MBProgressHUD.showAdded(to: view, animated: true)
             }
             
-            print(isBatchFetching)
-            
             dataTask = Alamofire.request(GithubRouter.search(searchStr, seachingPage))
                 .responseJSON { [weak self] response in
                     guard response.result.isSuccess,
                         let value = response.result.value else {
-                            print("Error while fetching colors: \(String(describing: response.result.error))")
+                            if (response.result.error! as NSError).code == -999 {
+                                print("request cancelled")
+                            } else {
+                                print("Error while fetching: \(String(describing: response.result.error))")
+                            }
                             return
                     }
                     
@@ -115,9 +118,7 @@ class RepoResultsViewController: UIViewController {
                             MBProgressHUD.hide(for: (self?.view!)!, animated: true)
                         }
                     }
-      
-                    print(self?.seachingPage as Any)
-                    
+                          
                     DispatchQueue.main.async {
                         self?.tableView.reloadData()
                     }
@@ -152,12 +153,17 @@ extension RepoResultsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
+        vc.repo = repos[indexPath.row]
+        self.present(vc, animated: false, completion: nil)
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if repos != nil {
-            let lastItem = repos.count - 1
+            let lastItem = repos.count - 5
             if indexPath.row == lastItem {
                 doSearch()
             }
@@ -188,6 +194,7 @@ extension RepoResultsViewController: UISearchBarDelegate {
         isBatchFetching = false
         doSearch()
     }
+    
 }
 
 

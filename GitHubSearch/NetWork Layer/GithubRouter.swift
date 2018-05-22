@@ -36,8 +36,7 @@ public enum GithubRouter: URLRequestConvertible {
         case .search(let searchStr, let page):
             return ["q": searchStr,
                     "sort": 0,
-                    "page" : page,
-                    "per_page": 12]
+                    "page" : page]
         }
     }
     
@@ -47,6 +46,7 @@ public enum GithubRouter: URLRequestConvertible {
         var request = URLRequest(url: url.appendingPathComponent(path))
         request.httpMethod = method.rawValue
         request.timeoutInterval = TimeInterval(10 * 1000)
+        request.allHTTPHeaderFields = ["Accept": "application/vnd.github.v3+json"]
         
         return  try URLEncoding.default.encode(request, with: parameters)
     }

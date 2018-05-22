@@ -18,13 +18,6 @@ class GithubRepo: CustomStringConvertible {
     var stars: Int?
     var forks: Int?
     var repoDescription: String?
-    
-    init() {
-        self.name = "Smith"
-        self.stars = 9
-        self.ownerHandle = "Stive"
-        self.ownerAvatarURL = "https://avatars1.githubusercontent.com/u/169110?s=400&v=4"
-    }
 
     init?(jsonResult: Json) {
         guard let name = jsonResult["name"] as? String,
