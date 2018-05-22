@@ -44,7 +44,7 @@ class ShowDetailsViewController: UIViewController {
     
     private func populateView() {
         if let ownerAvatarURL = repo.ownerAvatarURL {
-            repoImageView.setImageWith(URL(string: ownerAvatarURL)!)
+            repoImageView.downloadImage(from: ownerAvatarURL)
         }
         
         repoName.text = repo.name

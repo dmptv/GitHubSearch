@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 class GithubCell: UITableViewCell {
     
@@ -25,7 +24,7 @@ class GithubCell: UITableViewCell {
                 starCountLabel.text = "\(repo.stars!)"
                 
                 if let ownerAvatarURL = repo.ownerAvatarURL {
-                    authorImageView.setImageWith(URL(string: ownerAvatarURL)!)
+                    authorImageView.downloadImage(from: ownerAvatarURL)
                 }
             }
         }

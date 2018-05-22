@@ -22,7 +22,6 @@ class RepoResultsViewController: UIViewController {
     
     enum RepoVCCells: String {
         case githubCell = "githubCell"
-        case loadingCell = "loadingCell"
     }
     
     @IBOutlet weak var tableView: UITableView! {
@@ -55,77 +54,33 @@ class RepoResultsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let loadingNib = UINib(nibName: "LoadingCell", bundle: nil)
-        tableView.register(loadingNib, forCellReuseIdentifier: RepoVCCells.loadingCell.rawValue)
-        
+        // cover status bar
+        showBannerView()
+
         setupSearchBar()
+    }
+    
+    func showBannerView() {
+        if let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+            if let window: UIWindow = applicationDelegate.window {
+                let blueView = UIView(frame: CGRect(x: UIScreen.main.bounds.minX,
+                                                    y: UIScreen.main.bounds.minY,
+                                                    width: UIScreen.main.bounds.width, height: 20))
+                blueView.backgroundColor = .mainBlue()
+                window.addSubview(blueView)
+            }
+        }
     }
 
     private func setupSearchBar() {
         searchBar = UISearchBar()
         searchBar.delegate = self
+        searchBar.placeholder = "Search Top Repos"
+        searchBar.backgroundColor = .mainBlue()
         
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
     }
-    
-    private func doSearch() {
-        seachRepos(searchStr: searchSettings.searchString ?? "")
-    }
-    
-    private func seachRepos(searchStr: String) {
-        
-        if !searchStr.isEmpty {
-            dataTask?.cancel()
-            state = .loading
-           
-            if isBatchFetching {
-                seachingPage += 1
-            } else {
-                seachingPage = 1
-                MBProgressHUD.showAdded(to: view, animated: true)
-            }
-            
-            dataTask = Alamofire.request(GithubRouter.search(searchStr, seachingPage))
-                .responseJSON { [weak self] response in
-                    guard response.result.isSuccess,
-                        let value = response.result.value else {
-                            if (response.result.error! as NSError).code == -999 {
-                                print("request cancelled")
-                            } else {
-                                print("Error while fetching: \(String(describing: response.result.error))")
-                            }
-                            return
-                    }
-                    
-                    if (self?.isBatchFetching)! {
-                        var fetchedRepos: [GithubRepo] = []
-                        if let results = (value as! Json)["items"] as? [Json] {
-                            fetchedRepos = results.compactMap { json in
-                                GithubRepo(jsonResult: json) }
-                        }
-                        self?.repos.append(contentsOf: fetchedRepos)
-                        
-                    } else {
-                        // first page
-                        if let results = (value as! Json)["items"] as? [Json] {
-                            self?.repos = []
-                            self?.repos = results.compactMap { json in
-                                GithubRepo(jsonResult: json)
-                            }
-                            
-                            self?.isBatchFetching = true
-                            MBProgressHUD.hide(for: (self?.view!)!, animated: true)
-                        }
-                    }
-                          
-                    DispatchQueue.main.async {
-                        self?.tableView.reloadData()
-                    }
-            }
-        }
-    }
-
 }
 
 extension RepoResultsViewController: UITableViewDataSource {
@@ -173,6 +128,10 @@ extension RepoResultsViewController: UITableViewDelegate {
 
 extension RepoResultsViewController: UISearchBarDelegate {
     
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return UIBarPosition.top
+    }
+    
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
         return true
@@ -193,6 +152,63 @@ extension RepoResultsViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         isBatchFetching = false
         doSearch()
+    }
+    
+    private func doSearch() {
+        seachRepos(searchStr: searchSettings.searchString ?? "")
+    }
+    
+    private func seachRepos(searchStr: String) {
+        
+        if !searchStr.isEmpty {
+            dataTask?.cancel()
+            state = .loading
+            
+            if isBatchFetching {
+                seachingPage += 1
+            } else {
+                seachingPage = 1
+                MBProgressHUD.showAdded(to: view, animated: true)
+            }
+            
+            dataTask = Alamofire.request(GithubRouter.search(searchStr, seachingPage))
+                .responseJSON { [weak self] response in
+                    guard response.result.isSuccess,
+                        let value = response.result.value else {
+                            if (response.result.error! as NSError).code == -999 {
+                                print("request cancelled")
+                            } else {
+                                print("Error while fetching: \(String(describing: response.result.error))")
+                            }
+                            return
+                    }
+                    
+                    if (self?.isBatchFetching)! {
+                        var fetchedRepos: [GithubRepo] = []
+                        if let results = (value as! Json)["items"] as? [Json] {
+                            fetchedRepos = results.compactMap { json in
+                                GithubRepo(jsonResult: json) }
+                        }
+                        self?.repos.append(contentsOf: fetchedRepos)
+                        
+                    } else {
+                        // first page
+                        if let results = (value as! Json)["items"] as? [Json] {
+                            self?.repos = []
+                            self?.repos = results.compactMap { json in
+                                GithubRepo(jsonResult: json)
+                            }
+                            
+                            self?.isBatchFetching = true
+                            MBProgressHUD.hide(for: (self?.view!)!, animated: true)
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                    }
+            }
+        }
     }
     
 }

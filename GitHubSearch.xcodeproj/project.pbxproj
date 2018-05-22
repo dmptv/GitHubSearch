@@ -44,6 +44,11 @@
 		9D9718E120B439B3006ED06C /* UnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718C420B439B2006ED06C /* UnwindSegue.swift */; };
 		9D9718E220B439B3006ED06C /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718C520B439B3006ED06C /* AsyncImageView.swift */; };
 		9D9718E320B439B3006ED06C /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718C620B439B3006ED06C /* SoundPlayer.swift */; };
+		9D9718E620B44828006ED06C /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718E520B44828006ED06C /* ImageViewExtension.swift */; };
+		9D9718E820B448C8006ED06C /* ClosedRangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718E720B448C8006ED06C /* ClosedRangeExtension.swift */; };
+		9D9718EA20B4527F006ED06C /* UIImage+resized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718E920B4527F006ED06C /* UIImage+resized.swift */; };
+		9D9718EC20B46103006ED06C /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718EB20B46103006ED06C /* NavigationController.swift */; };
+		9D9718EE20B465F8006ED06C /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9718ED20B465F8006ED06C /* Extentions.swift */; };
 		9DA3936A20B2C38900CEC2DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA3936920B2C38900CEC2DF /* AppDelegate.swift */; };
 		9DA3936C20B2C38900CEC2DF /* RepoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA3936B20B2C38900CEC2DF /* RepoResultsViewController.swift */; };
 		9DA3936F20B2C38900CEC2DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DA3936D20B2C38900CEC2DF /* Main.storyboard */; };
@@ -92,6 +97,11 @@
 		9D9718C420B439B2006ED06C /* UnwindSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnwindSegue.swift; sourceTree = "<group>"; };
 		9D9718C520B439B3006ED06C /* AsyncImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		9D9718C620B439B3006ED06C /* SoundPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
+		9D9718E520B44828006ED06C /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
+		9D9718E720B448C8006ED06C /* ClosedRangeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosedRangeExtension.swift; sourceTree = "<group>"; };
+		9D9718E920B4527F006ED06C /* UIImage+resized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resized.swift"; sourceTree = "<group>"; };
+		9D9718EB20B46103006ED06C /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		9D9718ED20B465F8006ED06C /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		9DA3936620B2C38900CEC2DF /* GitHubSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DA3936920B2C38900CEC2DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9DA3936B20B2C38900CEC2DF /* RepoResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoResultsViewController.swift; sourceTree = "<group>"; };
@@ -165,6 +175,7 @@
 			children = (
 				9DA3936B20B2C38900CEC2DF /* RepoResultsViewController.swift */,
 				9D97186E20B43481006ED06C /* ShowDetailsViewController.swift */,
+				9D9718EB20B46103006ED06C /* NavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -206,6 +217,17 @@
 			path = Spring;
 			sourceTree = "<group>";
 		};
+		9D9718E420B44812006ED06C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				9D9718E520B44828006ED06C /* ImageViewExtension.swift */,
+				9D9718E720B448C8006ED06C /* ClosedRangeExtension.swift */,
+				9D9718E920B4527F006ED06C /* UIImage+resized.swift */,
+				9D9718ED20B465F8006ED06C /* Extentions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		9DA3935D20B2C38900CEC2DF = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				9DA3936920B2C38900CEC2DF /* AppDelegate.swift */,
+				9D9718E420B44812006ED06C /* Extension */,
 				9D97187020B436C9006ED06C /* Spring */,
 				9D97184920B30E29006ED06C /* Controller */,
 				9D97184820B308E1006ED06C /* View */,
@@ -388,10 +411,12 @@
 				9D9718D720B439B3006ED06C /* SpringTextField.swift in Sources */,
 				9D9718CB20B439B3006ED06C /* LoadingView.swift in Sources */,
 				9D97184620B2FBCC006ED06C /* NetError.swift in Sources */,
+				9D9718E620B44828006ED06C /* ImageViewExtension.swift in Sources */,
 				9D9718D320B439B3006ED06C /* AsyncButton.swift in Sources */,
 				9D9718E220B439B3006ED06C /* AsyncImageView.swift in Sources */,
 				9D9718DF20B439B3006ED06C /* KeyboardLayoutConstraint.swift in Sources */,
 				9DA3936A20B2C38900CEC2DF /* AppDelegate.swift in Sources */,
+				9D9718EC20B46103006ED06C /* NavigationController.swift in Sources */,
 				9D9718D520B439B3006ED06C /* DesignableButton.swift in Sources */,
 				9D97184320B2F6E0006ED06C /* GithubRouter.swift in Sources */,
 				9D9718D120B439B3006ED06C /* Misc.swift in Sources */,
@@ -407,9 +432,12 @@
 				9D9718D420B439B3006ED06C /* Spring.swift in Sources */,
 				9D9718D220B439B3006ED06C /* SpringImageView.swift in Sources */,
 				9D9718C820B439B3006ED06C /* TransitionManager.swift in Sources */,
+				9D9718EE20B465F8006ED06C /* Extentions.swift in Sources */,
 				9D9718DE20B439B3006ED06C /* ImageLoader.swift in Sources */,
 				9D9718DC20B439B3006ED06C /* DesignableTextView.swift in Sources */,
+				9D9718EA20B4527F006ED06C /* UIImage+resized.swift in Sources */,
 				9D9718E020B439B3006ED06C /* AutoTextView.swift in Sources */,
+				9D9718E820B448C8006ED06C /* ClosedRangeExtension.swift in Sources */,
 				9D9718CF20B439B3006ED06C /* DesignableView.swift in Sources */,
 				9D9718D820B439B3006ED06C /* DesignableTextField.swift in Sources */,
 			);
