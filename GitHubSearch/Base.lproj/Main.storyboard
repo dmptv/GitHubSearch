@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -115,12 +114,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1076" y="133.5832083958021"/>
+            <point key="canvasLocation" x="1060" y="-107"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="rsl-zm-HeQ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3Kf-dY-goJ" customClass="NavigationController" customModule="GitHubSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="secondnavBar" automaticallyAdjustsScrollViewInsets="NO" id="3Kf-dY-goJ" customClass="NavigationController" customModule="GitHubSearch" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="faT-J1-WnA">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -133,7 +132,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LrT-de-Ygc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="362" y="134"/>
+            <point key="canvasLocation" x="312" y="-106"/>
         </scene>
         <!--Show Details View Controller-->
         <scene sceneID="6FS-Sj-2JE">
@@ -294,12 +293,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="C3O-xf-x66" firstAttribute="leading" secondItem="OXh-Mz-aBa" secondAttribute="leadingMargin" constant="4" id="0k2-mJ-njv"/>
-                            <constraint firstItem="7X5-W3-vFC" firstAttribute="top" secondItem="C3O-xf-x66" secondAttribute="bottom" constant="10" id="Bfc-Vq-DJm"/>
+                            <constraint firstItem="C3O-xf-x66" firstAttribute="leading" secondItem="pGI-pa-6vd" secondAttribute="leading" constant="20" id="0k2-mJ-njv"/>
+                            <constraint firstItem="pGI-pa-6vd" firstAttribute="bottom" secondItem="C3O-xf-x66" secondAttribute="bottom" constant="10" id="Bfc-Vq-DJm"/>
                             <constraint firstItem="pGI-pa-6vd" firstAttribute="bottom" secondItem="SeV-KV-5LM" secondAttribute="bottom" id="EEm-w3-nBd"/>
                             <constraint firstItem="SeV-KV-5LM" firstAttribute="leading" secondItem="pGI-pa-6vd" secondAttribute="leading" id="FCR-Wt-RmG"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="C3O-xf-x66" secondAttribute="trailing" constant="4" id="JDM-iL-wwc"/>
-                            <constraint firstItem="C3O-xf-x66" firstAttribute="top" secondItem="bYI-w5-Cgi" secondAttribute="bottom" constant="5" id="iSM-u0-FIU"/>
+                            <constraint firstItem="pGI-pa-6vd" firstAttribute="trailing" secondItem="C3O-xf-x66" secondAttribute="trailing" constant="20" id="JDM-iL-wwc"/>
+                            <constraint firstItem="C3O-xf-x66" firstAttribute="top" secondItem="pGI-pa-6vd" secondAttribute="top" constant="5" id="iSM-u0-FIU"/>
                             <constraint firstItem="SeV-KV-5LM" firstAttribute="top" secondItem="pGI-pa-6vd" secondAttribute="top" constant="-20" id="sF5-3O-Ju5"/>
                             <constraint firstItem="pGI-pa-6vd" firstAttribute="trailing" secondItem="SeV-KV-5LM" secondAttribute="trailing" id="xcZ-Nt-uFl"/>
                         </constraints>
@@ -350,7 +349,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="130" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ytp-lv-wAV">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ytp-lv-wAV">
                                                     <rect key="frame" x="0.0" y="28" width="130" height="122"/>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="U2C-Cv-Bfo">
@@ -359,7 +358,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZN1-uz-2FO">
                                                             <rect key="frame" x="0.0" y="0.0" width="54.5" height="20"/>
                                                             <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="14"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" red="0.217050147" green="0.2982768247" blue="0.47434168780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="NVN-lB-sLf">
@@ -394,14 +393,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="rDD-Hh-pcM" secondAttribute="trailing" id="e1f-ks-uqS"/>
-                            <constraint firstItem="rDD-Hh-pcM" firstAttribute="top" secondItem="03f-lb-sbG" secondAttribute="bottom" id="f4Z-V5-VZf"/>
-                            <constraint firstItem="rDD-Hh-pcM" firstAttribute="leading" secondItem="Bq2-UY-4jx" secondAttribute="leading" id="xtw-bS-ySY"/>
-                            <constraint firstItem="6yM-Nz-GWQ" firstAttribute="top" secondItem="rDD-Hh-pcM" secondAttribute="bottom" id="zdU-T0-6O9"/>
+                            <constraint firstItem="Xxu-TE-iTt" firstAttribute="trailing" secondItem="rDD-Hh-pcM" secondAttribute="trailing" id="e1f-ks-uqS"/>
+                            <constraint firstItem="rDD-Hh-pcM" firstAttribute="top" secondItem="Xxu-TE-iTt" secondAttribute="top" id="f4Z-V5-VZf"/>
+                            <constraint firstItem="rDD-Hh-pcM" firstAttribute="leading" secondItem="Xxu-TE-iTt" secondAttribute="leading" id="xtw-bS-ySY"/>
+                            <constraint firstItem="Xxu-TE-iTt" firstAttribute="bottom" secondItem="rDD-Hh-pcM" secondAttribute="bottom" id="zdU-T0-6O9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Xxu-TE-iTt"/>
                     </view>
                     <navigationItem key="navigationItem" id="LrR-ne-Zgj"/>
+                    <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="collectionView" destination="rDD-Hh-pcM" id="jLk-aH-gw9"/>
                     </connections>

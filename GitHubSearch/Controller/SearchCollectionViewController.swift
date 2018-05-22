@@ -28,11 +28,13 @@ class SearchCollectionViewController: UIViewController {
     
     fileprivate(set) var state: State = .notSearchedYet
     fileprivate var dataTask: DataRequest? = nil
+    
+    
+    /// TODO: - abstract away all Searchung to Object
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         setupFlowLayout()
         showBannerView()
         setupSearchBar()
@@ -47,19 +49,10 @@ class SearchCollectionViewController: UIViewController {
         collectionView.collectionViewLayout = layout
         
         print(collectionView.frame.width)
-        print(layout.itemSize.width)
     }
     
     private func showBannerView() {
-        if let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
-            if let window: UIWindow = applicationDelegate.window {
-                let blueView = UIView(frame: CGRect(x: UIScreen.main.bounds.minX,
-                                                    y: UIScreen.main.bounds.minY,
-                                                    width: UIScreen.main.bounds.width, height: 20))
-                blueView.backgroundColor = .mainBlue()
-                window.addSubview(blueView)
-            }
-        }
+        Global.bannerView()
     }
     
     private func setupSearchBar() {
@@ -98,15 +91,7 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
     }
     
     fileprivate func transform(cell: UICollectionViewCell) {
-        let coverFrame = cell.convert(cell.bounds, to: view)
-        
-        let transformOffsetY = collectionView.bounds.height * 2 / 3 
-        let percent = (0...1).clamp((coverFrame.minY - transformOffsetY) / (collectionView.bounds.height-transformOffsetY))
-        
-        let maxScaleDifference: CGFloat = 0.2
-        let scale = percent * maxScaleDifference
-        
-        cell.transform = CGAffineTransform(scaleX: 1-scale, y: 1-scale)
+        Global.transform(cell: cell, view: view, collectionView: collectionView)
     }
 
 }
@@ -176,10 +161,12 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                 .responseJSON { [weak self] response in
                     guard response.result.isSuccess,
                         let value = response.result.value else {
+                            MBProgressHUD.hide(for: (self?.view!)!, animated: true)
+                            
                             if (response.result.error! as NSError).code == -999 {
                                 print("request cancelled")
                             } else {
-                                print("Error while fetching: \(String(describing: response.result.error))")
+                                networkError(response.result.error!)
                             }
                             return
                     }
@@ -211,6 +198,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
             }
         }
     }
+
 }
 
 

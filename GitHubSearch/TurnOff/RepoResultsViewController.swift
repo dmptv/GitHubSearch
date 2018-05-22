@@ -10,13 +10,6 @@ import UIKit
 import MBProgressHUD
 import Alamofire
 
-// FIXME: - keep track 
-enum State {
-    case notSearchedYet
-    case loading
-    case noResults
-    case results([GithubRepo])
-}
 
 class RepoResultsViewController: UIViewController {
     

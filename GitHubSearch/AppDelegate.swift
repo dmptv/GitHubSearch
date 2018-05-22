@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         setAppearance()
+        listenNetworkErrorNotifications() 
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound]) { (authorized, error) in
         }
@@ -35,6 +36,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(.alert)
+    }
+    
+    
+    func listenNetworkErrorNotifications() {
+        NotificationCenter.default.addObserver(forName: NetworkErrorNotification,
+                                               object: nil,
+                                               queue: OperationQueue.main,
+                                               using:
+            {  notification in
+                
+                let alert = UIAlertController(title: NSLocalizedString("Whoops...", comment: "Error alert: title"),
+                                              message: NSLocalizedString("There was an error reading from the GitHub. Please try again.", comment: "Error alert: message"),
+                                              preferredStyle: .alert)
+                let action = UIAlertAction(title: NSLocalizedString("OK", comment: "Error alert"), style: .default, handler: nil)
+                
+                alert.addAction(action)
+                
+                self.viewControllerForShowingAlert()?.present(alert, animated: true, completion: nil)
+        })
+    }
+    
+    func viewControllerForShowingAlert() -> UIViewController? {
+        guard let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate?,
+            let window: UIWindow = applicationDelegate.window
+            else { return nil }
+        
+        let rootViewController = window.rootViewController!
+        if let presentedViewController = rootViewController.presentedViewController {
+            return presentedViewController
+        } else {
+            return rootViewController
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

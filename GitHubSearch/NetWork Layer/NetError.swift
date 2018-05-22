@@ -8,8 +8,32 @@
 
 import Foundation
 
-enum NetError: Error {
+enum CustomError: Error {
     case badNetworkingStuff
     case missingBaseURL
     case invalidResponse
 }
+
+let NetworkErrorNotification = Notification.Name(rawValue:"NetworkErrorNotification")
+
+func networkError(_ error: Error) {
+    print("*** error: \(error)")
+    NotificationCenter.default.post(name: NetworkErrorNotification, object: nil)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

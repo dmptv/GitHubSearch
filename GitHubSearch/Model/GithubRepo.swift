@@ -7,7 +7,13 @@
 //
 
 import Foundation
-import AFNetworking
+
+enum State {
+    case notSearchedYet
+    case loading
+    case noResults
+    case results([GithubRepo])
+}
 
 typealias Json = [String: Any]
 
