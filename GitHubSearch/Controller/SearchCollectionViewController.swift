@@ -1,37 +1,19 @@
 //
-//  ViewController.swift
+//  SearchCollectionViewController.swift
 //  GitHubSearch
 //
-//  Created by 123 on 21.05.2018.
+//  Created by 123 on 22.05.2018.
 //  Copyright © 2018 kanat. All rights reserved.
 //
 
 import UIKit
-import MBProgressHUD
 import Alamofire
+import MBProgressHUD
 
-// FIXME: - keep track 
-enum State {
-    case notSearchedYet
-    case loading
-    case noResults
-    case results([GithubRepo])
-}
 
-class RepoResultsViewController: UIViewController {
+class SearchCollectionViewController: UIViewController {
     
-    enum RepoVCCells: String {
-        case githubCell = "githubCell"
-    }
-    
-    @IBOutlet weak var tableView: UITableView! {
-        didSet {
-            tableView.dataSource = self
-            tableView.delegate = self
-            tableView.estimatedRowHeight = 150
-            tableView.rowHeight = UITableViewAutomaticDimension
-        }
-    }
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var searchBar: UISearchBar!
     var searchSettings = SearchResult()
@@ -40,27 +22,35 @@ class RepoResultsViewController: UIViewController {
     
     var repos: [GithubRepo]! {
         didSet{
-            tableView.reloadData()
+            collectionView.reloadData()
         }
     }
     
     fileprivate(set) var state: State = .notSearchedYet
     fileprivate var dataTask: DataRequest? = nil
-    
-    deinit {
-        print("deinited: \(self)")
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // cover status bar
-        showBannerView()
 
+        setupFlowLayout()
+        showBannerView()
         setupSearchBar()
     }
     
-    func showBannerView() {
+    private func setupFlowLayout() {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 16, bottom: 10, right: 16)
+        layout.itemSize = CGSize(width: (collectionView.frame.width/2)-50, height: 150) 
+        layout.minimumLineSpacing = 5
+        layout.minimumInteritemSpacing = 5
+        collectionView.collectionViewLayout = layout
+        
+        print(collectionView.frame.width)
+        print(layout.itemSize.width)
+    }
+    
+    private func showBannerView() {
         if let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
             if let window: UIWindow = applicationDelegate.window {
                 let blueView = UIView(frame: CGRect(x: UIScreen.main.bounds.minX,
@@ -71,7 +61,7 @@ class RepoResultsViewController: UIViewController {
             }
         }
     }
-
+    
     private func setupSearchBar() {
         searchBar = UISearchBar()
         searchBar.delegate = self
@@ -81,42 +71,49 @@ class RepoResultsViewController: UIViewController {
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
     }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.collectionView.visibleCells.forEach{transform(cell: $0)}
+    }
+
 }
 
-extension RepoResultsViewController: UITableViewDataSource {
+extension SearchCollectionViewController: UICollectionViewDataSource {
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if repos != nil {
             return repos.count
         }
         
         return 0
     }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RepoVCCells.githubCell.rawValue,
-                                                 for: indexPath as IndexPath) as! GithubCell
-        cell.authorImageView.image = nil
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionShow", for: indexPath) as! ShowCollectionCell
         cell.repo = repos[indexPath.row]
+        
+        transform(cell: cell)
         return cell
     }
+    
+    fileprivate func transform(cell: UICollectionViewCell) {
+        let coverFrame = cell.convert(cell.bounds, to: view)
+        
+        let transformOffsetY = collectionView.bounds.height * 2 / 3 
+        let percent = (0...1).clamp((coverFrame.minY - transformOffsetY) / (collectionView.bounds.height-transformOffsetY))
+        
+        let maxScaleDifference: CGFloat = 0.2
+        let scale = percent * maxScaleDifference
+        
+        cell.transform = CGAffineTransform(scaleX: 1-scale, y: 1-scale)
+    }
+
 }
 
-extension RepoResultsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
-        vc.repo = repos[indexPath.row]
-        self.present(vc, animated: false, completion: nil)
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+extension SearchCollectionViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if repos != nil {
             let lastItem = repos.count - 5
             if indexPath.row == lastItem {
@@ -124,13 +121,17 @@ extension RepoResultsViewController: UITableViewDelegate {
             }
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
+        vc.repo = repos[indexPath.row]
+        self.present(vc, animated: false, completion: nil)
+        
+        collectionView.deselectItem(at: indexPath, animated: false)
+    }
 }
 
-extension RepoResultsViewController: UISearchBarDelegate {
-    
-    func position(for bar: UIBarPositioning) -> UIBarPosition {
-        return UIBarPosition.top
-    }
+extension SearchCollectionViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
@@ -205,15 +206,12 @@ extension RepoResultsViewController: UISearchBarDelegate {
                     }
                     
                     DispatchQueue.main.async {
-                        self?.tableView.reloadData()
+                        self?.collectionView.reloadData()
                     }
             }
         }
     }
-    
 }
-
-
 
 
 

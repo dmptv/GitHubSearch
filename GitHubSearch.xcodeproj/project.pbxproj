@@ -55,6 +55,8 @@
 		9DA3937120B2C38C00CEC2DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DA3937020B2C38C00CEC2DF /* Assets.xcassets */; };
 		9DA3937420B2C38C00CEC2DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DA3937220B2C38C00CEC2DF /* LaunchScreen.storyboard */; };
 		9DA3937C20B2C9DF00CEC2DF /* GithubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA3937B20B2C9DF00CEC2DF /* GithubCell.swift */; };
+		9DCB82BD20B4699900D822AF /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82BC20B4699900D822AF /* SearchCollectionViewController.swift */; };
+		9DCB82BF20B46A2300D822AF /* ShowCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +112,8 @@
 		9DA3937320B2C38C00CEC2DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9DA3937520B2C38C00CEC2DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DA3937B20B2C9DF00CEC2DF /* GithubCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubCell.swift; sourceTree = "<group>"; };
+		9DCB82BC20B4699900D822AF /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
+		9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionCell.swift; sourceTree = "<group>"; };
 		9E70D3E4692655FB2D27A4A8 /* Pods-GitHubSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-GitHubSearch/Pods-GitHubSearch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,9 +167,7 @@
 		9D97184820B308E1006ED06C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9DA3937B20B2C9DF00CEC2DF /* GithubCell.swift */,
-				9D97186C20B3FEBC006ED06C /* LoadingCell.swift */,
-				9D97186A20B3FE9E006ED06C /* LoadingCell.xib */,
+				9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -173,9 +175,9 @@
 		9D97184920B30E29006ED06C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9DA3936B20B2C38900CEC2DF /* RepoResultsViewController.swift */,
-				9D97186E20B43481006ED06C /* ShowDetailsViewController.swift */,
 				9D9718EB20B46103006ED06C /* NavigationController.swift */,
+				9DCB82BC20B4699900D822AF /* SearchCollectionViewController.swift */,
+				9D97186E20B43481006ED06C /* ShowDetailsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -256,12 +258,24 @@
 				9D97184820B308E1006ED06C /* View */,
 				9D97184720B308D8006ED06C /* Model */,
 				9D97184420B2FB8D006ED06C /* NetWork Layer */,
+				9DCB82C020B4760200D822AF /* TurnOff */,
 				9DA3936D20B2C38900CEC2DF /* Main.storyboard */,
 				9DA3937020B2C38C00CEC2DF /* Assets.xcassets */,
 				9DA3937220B2C38C00CEC2DF /* LaunchScreen.storyboard */,
 				9DA3937520B2C38C00CEC2DF /* Info.plist */,
 			);
 			path = GitHubSearch;
+			sourceTree = "<group>";
+		};
+		9DCB82C020B4760200D822AF /* TurnOff */ = {
+			isa = PBXGroup;
+			children = (
+				9D97186A20B3FE9E006ED06C /* LoadingCell.xib */,
+				9D97186C20B3FEBC006ED06C /* LoadingCell.swift */,
+				9DA3936B20B2C38900CEC2DF /* RepoResultsViewController.swift */,
+				9DA3937B20B2C9DF00CEC2DF /* GithubCell.swift */,
+			);
+			path = TurnOff;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -423,10 +437,12 @@
 				9D9718D920B439B3006ED06C /* SpringLabel.swift in Sources */,
 				9D9718C720B439B3006ED06C /* BlurView.swift in Sources */,
 				9D9718E120B439B3006ED06C /* UnwindSegue.swift in Sources */,
+				9DCB82BF20B46A2300D822AF /* ShowCollectionCell.swift in Sources */,
 				9D9718E320B439B3006ED06C /* SoundPlayer.swift in Sources */,
 				9D9718CA20B439B3006ED06C /* DesignableTabBarController.swift in Sources */,
 				9D9718D020B439B3006ED06C /* SpringTextView.swift in Sources */,
 				9D97186F20B43481006ED06C /* ShowDetailsViewController.swift in Sources */,
+				9DCB82BD20B4699900D822AF /* SearchCollectionViewController.swift in Sources */,
 				9DA3937C20B2C9DF00CEC2DF /* GithubCell.swift in Sources */,
 				9D9718CD20B439B3006ED06C /* DesignableLabel.swift in Sources */,
 				9D9718D420B439B3006ED06C /* Spring.swift in Sources */,
