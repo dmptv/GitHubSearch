@@ -162,7 +162,7 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SfV-7c-qju" customClass="CustomImageView" customModule="GitHubSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="335"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="335" id="H50-O0-ytM"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="335" id="H50-O0-ytM"/>
                                             <constraint firstAttribute="width" secondItem="SfV-7c-qju" secondAttribute="height" multiplier="67:67" id="fb0-2k-eCV"/>
                                         </constraints>
                                     </imageView>

@@ -16,7 +16,7 @@ class SearchCollectionViewController: UIViewController {
     
     var searchBar: UISearchBar!
     var searchSettings = SearchResult()
-    var seachingPage = 1
+    var seachingPage = 0
     var isBatchFetching = false
     var requestCancelled = false
     var progressHUD: MBProgressHUD?
@@ -117,7 +117,7 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
      
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if repos != nil {
-            if indexPath.row == repos.count - 5 {
+            if indexPath.row == repos.count - 1 {
                 doSearch()
             }
         }
@@ -150,6 +150,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
         afterDelay(0) { [weak self] in
             self?.progressHUD?.hide(animated: false)
         }
+        seachingPage = 1
         doSearch()
     }
     
@@ -163,13 +164,15 @@ extension SearchCollectionViewController: UISearchBarDelegate {
     
     private func seachRepos(searchStr: String) {
         
+        seachingPage += 1
+        
         if !searchStr.isEmpty {
             state = .loading
             if isBatchFetching {
-                seachingPage += 1
+//                seachingPage += 1
             } else {
                 // first page
-                seachingPage = 1
+//                seachingPage = 1
                     afterDelay(0) {
                         self.view.addSubview(self.progressHUD!)
                         self.progressHUD?.show(animated: false)
