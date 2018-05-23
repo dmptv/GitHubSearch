@@ -160,8 +160,8 @@
 		9D97184720B308D8006ED06C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9D97183E20B2D4A8006ED06C /* SearchResult.swift */,
 				9D97184020B2D6C7006ED06C /* GithubRepo.swift */,
+				9D97183E20B2D4A8006ED06C /* SearchResult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

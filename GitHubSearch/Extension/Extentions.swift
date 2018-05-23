@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal func printMine(items: Any..., separator: String = " ", terminator: String = "\n") {
+internal func printMine(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     #if DEBUG
     var i = items.startIndex
     repeat {

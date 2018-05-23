@@ -8,6 +8,10 @@
 
 import UIKit
 
+func afterDelay(_ seconds: Double, closure: @escaping () -> ()) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: closure)
+}
+
 class Global {
     class func bannerView() {
         if let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate? {

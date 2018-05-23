@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 import MBProgressHUD
 
-
 class SearchCollectionViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -19,7 +18,6 @@ class SearchCollectionViewController: UIViewController {
     var searchSettings = SearchResult()
     var seachingPage = 1
     var isBatchFetching = false
-    var noResults = false
     
     var repos: [GithubRepo]! {
         didSet{
@@ -30,7 +28,7 @@ class SearchCollectionViewController: UIViewController {
     fileprivate(set) var state: State = .notSearchedYet
     fileprivate var dataTask: DataRequest? = nil
     
-    /// TODO: - abstract away all Searchung to Object
+    // TODO: - abstract away all Searchung to Object
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +45,6 @@ class SearchCollectionViewController: UIViewController {
         layout.minimumLineSpacing = 5
         layout.minimumInteritemSpacing = 5
         collectionView.collectionViewLayout = layout
-        
-        print(collectionView.frame.width)
     }
     
     private func showBannerView() {
@@ -100,7 +96,8 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
 extension SearchCollectionViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if repos != nil && !noResults {
+        
+        if repos != nil && isBatchFetching {
             let lastItem = repos.count - 5
             if indexPath.row == lastItem {
                 doSearch()
@@ -109,6 +106,8 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        searchBar.resignFirstResponder()
+        
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
         vc.repo = repos[indexPath.row]
         self.present(vc, animated: false, completion: nil)
@@ -138,6 +137,8 @@ extension SearchCollectionViewController: UISearchBarDelegate {
         searchSettings.searchString = searchBar.text
         searchBar.resignFirstResponder()
         isBatchFetching = false
+        dataTask?.cancel()
+        MBProgressHUD.hide(for: view, animated: true)
         doSearch()
     }
     
@@ -148,12 +149,11 @@ extension SearchCollectionViewController: UISearchBarDelegate {
     private func seachRepos(searchStr: String) {
         
         if !searchStr.isEmpty {
-            dataTask?.cancel()
             state = .loading
-            
             if isBatchFetching {
                 seachingPage += 1
             } else {
+                // first page
                 seachingPage = 1
                 MBProgressHUD.showAdded(to: view, animated: true)
             }
@@ -165,8 +165,8 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             MBProgressHUD.hide(for: (self?.view!)!, animated: true)
                             
                             if (response.result.error! as NSError).code == -999 {
-                                print("request cancelled")
-                                self?.noResults = true
+                                printMine("request cancelled")
+                                self?.isBatchFetching = false
                             } else {
                                 networkError(response.result.error!)
                             }
@@ -179,7 +179,13 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             fetchedRepos = results.compactMap { json in
                                 GithubRepo(jsonResult: json) }
                         }
+
+                        //TODO: - make a guard let
                         self?.repos.append(contentsOf: fetchedRepos)
+                        
+//                        for _ in (1...30) {
+//                            self?.repos.append(GithubRepo())
+//                        }
                         
                     } else {
                         // first page
@@ -193,10 +199,11 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             MBProgressHUD.hide(for: (self?.view!)!, animated: true)
                         }
                     }
-                    
-                    DispatchQueue.main.async {
+        
+                    afterDelay(0.5, closure: {
                         self?.collectionView.reloadData()
-                    }
+                    })
+
             }
         }
     }
