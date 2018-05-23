@@ -148,8 +148,14 @@ extension SearchCollectionViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         isBatchFetching = false
         dataTask?.cancel()
-        progressHUD?.hide(animated: false)
+        afterDelay(0) { [weak self] in 
+            self?.progressHUD?.hide(animated: false)
+        }
         doSearch()
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.searchBar.endEditing(true)
     }
     
     private func doSearch() {
@@ -165,25 +171,26 @@ extension SearchCollectionViewController: UISearchBarDelegate {
             } else {
                 // first page
                 seachingPage = 1
-                if progressHUD != nil {
                     afterDelay(0) {
                         self.view.addSubview(self.progressHUD!)
                         self.progressHUD?.show(animated: false)
                     }
-                }
             }
             
-            dataTask = Alamofire.request(GithubRouter.search(searchStr, seachingPage))
+            let query = searchStr.replacingOccurrences(of: " ", with: "%20")
+            dataTask = Alamofire.request(GithubRouter.search(query, seachingPage))
                 .responseJSON { [weak self] response in
                     
                     guard let strongSelf = self else { return }
-                    
+                    afterDelay(0, closure: {
+                        strongSelf.progressHUD?.hide(animated: false)
+                    })
+
                     guard response.result.isSuccess,
                         let value = response.result.value else {
                             strongSelf.progressHUD?.hide(animated: false)
                             if (response.result.error! as NSError).code == -999 {
                                 printMine("request cancelled")
-                                strongSelf.progressHUD?.hide(animated: false)
                                 return
                             } else {
                                 networkError(response.result.error!)
@@ -208,11 +215,10 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             }
                             
                             strongSelf.isBatchFetching = true
-                            strongSelf.progressHUD?.hide(animated: false)
                         }
                     }
         
-                    afterDelay(0, closure: {
+                    afterDelay(0.25, closure: {
                         strongSelf.collectionView.reloadData()
                     })
             }
