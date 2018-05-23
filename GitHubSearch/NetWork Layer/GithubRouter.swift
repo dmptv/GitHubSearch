@@ -47,8 +47,7 @@ public enum GithubRouter: URLRequestConvertible {
         var request = URLRequest(url: url.appendingPathComponent(path))
         request.httpMethod = method.rawValue
         request.timeoutInterval = TimeInterval(10 * 1000)
-        request.allHTTPHeaderFields = ["Accept": "application/vnd.github.v3+json"]
-        
+        request.allHTTPHeaderFields = ["Accept": "application/vnd.github.mercy-preview+json"] //  application/vnd.github.v3+json
         return  try URLEncoding.default.encode(request, with: parameters)
     }
     

@@ -20,7 +20,8 @@ class SearchCollectionViewController: UIViewController {
     var isBatchFetching = false
     var requestCancelled = false
     var progressHUD: MBProgressHUD?
-    
+    var totalCount: Int = 0
+
     var repos: [GithubRepo]! {
         didSet{
             collectionView.reloadData()
@@ -116,8 +117,9 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
     }
      
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if repos != nil {
+        if repos != nil && isBatchFetching && repos.count >= 1 {
             if indexPath.row == repos.count - 1 {
+                printMine("willDisplay")
                 doSearch()
             }
         }
@@ -146,11 +148,14 @@ extension SearchCollectionViewController: UISearchBarDelegate {
         searchSettings.searchString = searchBar.text
         searchBar.resignFirstResponder()
         isBatchFetching = false
+        totalCount = 0
+        if repos != nil {
+            repos.removeAll()
+        }
         dataTask?.cancel()
         afterDelay(0) { [weak self] in
             self?.progressHUD?.hide(animated: false)
         }
-        seachingPage = 1
         doSearch()
     }
     
@@ -164,34 +169,52 @@ extension SearchCollectionViewController: UISearchBarDelegate {
     
     private func seachRepos(searchStr: String) {
         
-        seachingPage += 1
-        
         if !searchStr.isEmpty {
             state = .loading
             if isBatchFetching {
-//                seachingPage += 1
+                seachingPage += 1
             } else {
                 // first page
-//                seachingPage = 1
+                seachingPage = 1
                     afterDelay(0) {
                         self.view.addSubview(self.progressHUD!)
                         self.progressHUD?.show(animated: false)
                     }
             }
             
+            printMine("seachingPage = ", seachingPage)
+            
             let query = searchStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             dataTask = Alamofire.request(GithubRouter.search(query, seachingPage))
                 .responseJSON { [weak self] response in
-                    
+          
                     guard let strongSelf = self else { return }
                     afterDelay(0, closure: {
                         strongSelf.progressHUD?.hide(animated: false)
                     })
+                    
+                    if let jsonData =
+                        try? JSONSerialization.jsonObject(with: response.data!,
+                                                          options: [.allowFragments]) as? [String : Any],
+                        let count = jsonData!["total_count"] as? Int {
+                        strongSelf.totalCount = count
+                    }
+                    
+                    if strongSelf.repos != nil, strongSelf.repos.count >= strongSelf.totalCount {
+                        printMine("--- ", strongSelf.repos.count," >= ", strongSelf.totalCount)
+                        return
+                    }
+
+                    if let code = response.response, code.statusCode == 403 {
+                        printMine("403")
+                        return
+                    }
 
                     guard response.result.isSuccess, let value = response.result.value
                         else {
                             if (response.result.error! as NSError).code == -999 {
                                 printMine("request cancelled")
+                                strongSelf.requestCancelled = true
                                 return
                             } else {
                                 networkError(response.result.error!)
