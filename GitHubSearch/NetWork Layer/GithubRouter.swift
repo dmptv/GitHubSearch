@@ -36,8 +36,7 @@ public enum GithubRouter: URLRequestConvertible {
         case .search(let searchStr, let page):
             return ["q": searchStr,
                     "sort": "stars",
-                    "page" : page,
-                    "per_page": 30
+                    "page" : page
             ]
         }
     }

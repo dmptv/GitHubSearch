@@ -14,15 +14,22 @@ class ShowCollectionCell: UICollectionViewCell {
     @IBOutlet weak var ownerImage: UIImageView!
     @IBOutlet weak var starsLabel: UILabel!
     
+    var urlString = ""
     fileprivate var downloadTask: DataRequest?
+    var imageViewTmp = UIImageView()
     
     var repo: GithubRepo? {
         didSet{
             if let repo = repo {
                 starsLabel.text = "\(repo.stars!)"
                 
-                if let ownerAvatarURL = repo.ownerAvatarURL {
-                    downloadTask = ownerImage.downloadImage(from: ownerAvatarURL)
+                downloadTask = imageViewTmp.downloadImage(from: repo.ownerAvatarURL!)
+                
+                if urlString == "" || urlString == repo.ownerAvatarURL! {
+                    if let img = ownerImage {
+                        img.image = nil
+                    }
+                    ownerImage.image = imageViewTmp.image
                 }
             }
         }
@@ -31,23 +38,18 @@ class ShowCollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        downloadTask?.cancel()
-        downloadTask = nil
+//        downloadTask?.cancel()
+//        downloadTask = nil
     }
     
 }
 
 
-/*
+class CustomCollectionViewCell: UICollectionViewCell {
+    var urlString = ""
+}
 
-                    // This can happen after the cell has dissapeared and reused!
-                    // check that the image.url matches what is supposed to be in the cell at that time !!!
-                    //
-                    if cell.urlString == image.url.absoluteString {
-                        imageView.image = dimage
-                    }
 
-*/
 
 
  

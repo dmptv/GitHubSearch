@@ -18,6 +18,7 @@ class SearchCollectionViewController: UIViewController {
     var searchSettings = SearchResult()
     var seachingPage = 1
     var isBatchFetching = false
+    var requestCancelled = false
     
     var repos: [GithubRepo]! {
         didSet{
@@ -97,9 +98,8 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        if repos != nil && isBatchFetching {
-            let lastItem = repos.count - 5
-            if indexPath.row == lastItem {
+        if repos != nil && isBatchFetching && !requestCancelled {
+            if indexPath.row == repos.count - 1 {
                 doSearch()
             }
         }
@@ -166,7 +166,10 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             
                             if (response.result.error! as NSError).code == -999 {
                                 printMine("request cancelled")
+                                self?.requestCancelled = true
                                 self?.isBatchFetching = false
+                                self?.dataTask?.cancel()
+                                return
                             } else {
                                 networkError(response.result.error!)
                             }
@@ -183,10 +186,8 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         //TODO: - make a guard let
                         self?.repos.append(contentsOf: fetchedRepos)
                         
-//                        for _ in (1...30) {
-//                            self?.repos.append(GithubRepo())
-//                        }
-                        
+                        //self?.repos.append(contentsOf: GithubRepo.mockData())
+                       
                     } else {
                         // first page
                         if let results = (value as! Json)["items"] as? [Json] {
@@ -207,6 +208,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
             }
         }
     }
+    
 
 }
 

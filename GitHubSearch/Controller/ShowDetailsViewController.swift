@@ -41,7 +41,7 @@ class ShowDetailsViewController: UIViewController {
     
     private func animateView(with animation: String) {
         containerView.animation = animation
-        containerView.curve = "easeIn"
+        containerView.curve = AnimationCurves.EaseIn.rawValue
         containerView.duration = 0.5
     }
     
@@ -57,9 +57,13 @@ class ShowDetailsViewController: UIViewController {
     }
 
     @IBAction func xPressed(_ sender: UIButton) {
-        animateView(with: "zoomOut")
-        self.dismiss(animated: true, completion: nil)
+        animateView(with: AnimationPresets.Fall.rawValue)
+        containerView.animateNext {
+            self.dismiss(animated: false, completion: nil)
+        }
     }
+    
+    
     
     
 }

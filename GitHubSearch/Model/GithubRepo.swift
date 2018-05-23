@@ -62,6 +62,15 @@ class GithubRepo: CustomStringConvertible {
             "\n\t[Avatar: \(self.ownerAvatarURL!)]" +
         "\n\t[Description: \(self.repoDescription!)]"
     }
+    
+    
+    static func mockData() -> [GithubRepo] {
+        var temparr = [GithubRepo]()
+        for _ in (1...30) {
+            temparr.append(GithubRepo())
+        }
+        return temparr
+    }
 }
 
 
