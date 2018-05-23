@@ -19,6 +19,7 @@ class SearchCollectionViewController: UIViewController {
     var seachingPage = 1
     var isBatchFetching = false
     var requestCancelled = false
+    var progressHUD: MBProgressHUD?
     
     var repos: [GithubRepo]! {
         didSet{
@@ -33,6 +34,10 @@ class SearchCollectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        progressHUD = MBProgressHUD.init(view: view)
+        progressHUD?.removeFromSuperViewOnHide = true
+        progressHUD?.center = view.center
         
         setupFlowLayout()
         showBannerView()
@@ -113,12 +118,11 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
      
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if repos != nil && isBatchFetching && !requestCancelled {
-            if indexPath.row == repos.count - 1 {
+            if indexPath.row == repos.count - 5 {
                 doSearch()
             }
         }
     }
-
 
 }
 
@@ -144,7 +148,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         isBatchFetching = false
         dataTask?.cancel()
-        MBProgressHUD.hide(for: view, animated: true)
+        progressHUD?.hide(animated: false)
         doSearch()
     }
     
@@ -161,7 +165,12 @@ extension SearchCollectionViewController: UISearchBarDelegate {
             } else {
                 // first page
                 seachingPage = 1
-                MBProgressHUD.showAdded(to: view, animated: true)
+                if progressHUD != nil {
+                    afterDelay(0) {
+                        self.view.addSubview(self.progressHUD!)
+                        self.progressHUD?.show(animated: false)
+                    }
+                }
             }
             
             dataTask = Alamofire.request(GithubRouter.search(searchStr, seachingPage))
@@ -171,12 +180,10 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                     
                     guard response.result.isSuccess,
                         let value = response.result.value else {
-                            MBProgressHUD.hide(for: strongSelf.view!, animated: true)
-                            
+                            strongSelf.progressHUD?.hide(animated: false)
                             if (response.result.error! as NSError).code == -999 {
                                 printMine("request cancelled")
-                                strongSelf.isBatchFetching = false
-                                strongSelf.dataTask?.cancel()
+                                strongSelf.progressHUD?.hide(animated: false)
                                 return
                             } else {
                                 networkError(response.result.error!)
@@ -190,7 +197,6 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             fetchedRepos = results.compactMap { json in
                                 GithubRepo(jsonResult: json) }
                         }
-
                         strongSelf.repos.append(contentsOf: fetchedRepos)
                         
                     } else {
@@ -202,14 +208,13 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             }
                             
                             strongSelf.isBatchFetching = true
-                            MBProgressHUD.hide(for: strongSelf.view!, animated: true)
+                            strongSelf.progressHUD?.hide(animated: false)
                         }
                     }
         
                     afterDelay(0, closure: {
                         strongSelf.collectionView.reloadData()
                     })
-
             }
         }
     }

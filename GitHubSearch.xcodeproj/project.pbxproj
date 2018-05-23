@@ -59,6 +59,7 @@
 		9DCB82BF20B46A2300D822AF /* ShowCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */; };
 		9DCB82C220B491CC00D822AF /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82C120B491CC00D822AF /* Globals.swift */; };
 		9DCB82CA20B5871100D822AF /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82C920B5871100D822AF /* CustomImageView.swift */; };
+		9DCB82CE20B5ACB700D822AF /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82CD20B5ACB700D822AF /* Search.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,7 @@
 		9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionCell.swift; sourceTree = "<group>"; };
 		9DCB82C120B491CC00D822AF /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		9DCB82C920B5871100D822AF /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
+		9DCB82CD20B5ACB700D822AF /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		9E70D3E4692655FB2D27A4A8 /* Pods-GitHubSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-GitHubSearch/Pods-GitHubSearch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				9DCB82BC20B4699900D822AF /* SearchCollectionViewController.swift */,
+				9DCB82CD20B5ACB700D822AF /* Search.swift */,
 				9D97186E20B43481006ED06C /* ShowDetailsViewController.swift */,
 				9D9718EB20B46103006ED06C /* NavigationController.swift */,
 			);
@@ -434,6 +437,7 @@
 				9D9718E620B44828006ED06C /* ImageViewExtension.swift in Sources */,
 				9D9718D320B439B3006ED06C /* AsyncButton.swift in Sources */,
 				9D9718E220B439B3006ED06C /* AsyncImageView.swift in Sources */,
+				9DCB82CE20B5ACB700D822AF /* Search.swift in Sources */,
 				9D9718DF20B439B3006ED06C /* KeyboardLayoutConstraint.swift in Sources */,
 				9DCB82C220B491CC00D822AF /* Globals.swift in Sources */,
 				9DA3936A20B2C38900CEC2DF /* AppDelegate.swift in Sources */,
