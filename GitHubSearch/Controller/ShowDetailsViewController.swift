@@ -9,6 +9,11 @@
 import UIKit
 import Alamofire
 
+struct StretchyHeader {
+    fileprivate let headerHeight: CGFloat = 418
+    fileprivate let headerCut: CGFloat = 50
+}
+
 class ShowDetailsViewController: UIViewController {
     @IBOutlet weak var repoImageView: CustomImageView!
     @IBOutlet weak var repoName: UILabel!
@@ -19,6 +24,7 @@ class ShowDetailsViewController: UIViewController {
     @IBOutlet weak var saveBtn: UIButton!
     @IBOutlet weak var viewMoreBtn: UIButton!
     @IBOutlet weak var closeBtn: UIButton!
+    @IBOutlet weak var headerView: UIView!
     
     @IBOutlet weak var containerView: SpringView!
     fileprivate var downloadTask: DataRequest?
@@ -27,6 +33,8 @@ class ShowDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        repoImageView.layer.masksToBounds = true 
 
         downloadTask?.cancel()
         downloadTask = nil
@@ -63,8 +71,13 @@ class ShowDetailsViewController: UIViewController {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        setNewView()
+    }
     
-    
+    private func setNewView() {
+        
+    }
     
 }
 
