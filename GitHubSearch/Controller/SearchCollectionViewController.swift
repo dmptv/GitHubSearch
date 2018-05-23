@@ -18,6 +18,7 @@ class SearchCollectionViewController: UIViewController {
     var searchSettings = SearchResult()
     var seachingPage = 1
     var isBatchFetching = false
+    var requestCancelled = false
     
     var repos: [GithubRepo]! {
         didSet{
@@ -36,12 +37,17 @@ class SearchCollectionViewController: UIViewController {
         setupFlowLayout()
         showBannerView()
         setupSearchBar()
+        
     }
     
     private func setupFlowLayout() {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 16, bottom: 10, right: 16)
-        layout.itemSize = CGSize(width: (collectionView.frame.width/2)-50, height: 150) 
+        var itmeWidth = (collectionView.frame.width/2)-21
+        if view.frame.width == 320 {
+            itmeWidth = (collectionView.frame.width/2)-48
+        }
+        layout.itemSize = CGSize(width: itmeWidth, height: itmeWidth+20)
         layout.minimumLineSpacing = 5
         layout.minimumInteritemSpacing = 5
         collectionView.collectionViewLayout = layout
@@ -71,7 +77,7 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if repos != nil {
-            return repos.count + 1
+            return repos.count
         }
         
         return 0
@@ -80,14 +86,9 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionShow", for: indexPath) as! ShowCollectionCell
-        
-        if indexPath.row == repos.count {
-            cell.reversViews(isLastItem: true)
-        } else {
-            if indexPath.item < repos.count {
-                cell.reversViews(isLastItem: false)
-                cell.repo = repos[indexPath.row]
-            }
+
+        if indexPath.item < repos.count {
+            cell.repo = repos[indexPath.row]
         }
         
         transform(cell: cell)
@@ -104,17 +105,21 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         searchBar.resignFirstResponder()
-        
-        if indexPath.row == repos.count {
-            doSearch()
-        } else {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
-            vc.repo = repos[indexPath.row]
-            self.present(vc, animated: false, completion: nil)
-        }
-        
+        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
+        vc.repo = repos[indexPath.row]
+        self.present(vc, animated: false, completion: nil)
         collectionView.deselectItem(at: indexPath, animated: false)
     }
+     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if repos != nil && isBatchFetching && !requestCancelled {
+            if indexPath.row == repos.count - 1 {
+                doSearch()
+            }
+        }
+    }
+
+
 }
 
 extension SearchCollectionViewController: UISearchBarDelegate {
@@ -186,11 +191,8 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                                 GithubRepo(jsonResult: json) }
                         }
 
-                        //TODO: - make a guard let
                         strongSelf.repos.append(contentsOf: fetchedRepos)
                         
-                        //strongSelf.repos.append(contentsOf: GithubRepo.mockData())
-                       
                     } else {
                         // first page
                         if let results = (value as! Json)["items"] as? [Json] {
@@ -204,7 +206,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         }
                     }
         
-                    afterDelay(0.25, closure: {
+                    afterDelay(0, closure: {
                         strongSelf.collectionView.reloadData()
                     })
 

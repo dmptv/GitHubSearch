@@ -172,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */,
+				9DCB82C920B5871100D822AF /* CustomImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -231,7 +232,6 @@
 				9D9718E920B4527F006ED06C /* UIImage+resized.swift */,
 				9D9718ED20B465F8006ED06C /* Extentions.swift */,
 				9DCB82C120B491CC00D822AF /* Globals.swift */,
-				9DCB82C920B5871100D822AF /* CustomImageView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";

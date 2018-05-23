@@ -25,7 +25,6 @@ internal func afterDelay(_ seconds: Double, closure: @escaping () -> ()) {
 class Global {
     class func bannerView() {
         if let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
-            // check if iPhone X = 50
             let rect = UIScreen.main.bounds
             var bannerHeight: CGFloat = 20.0
             if (rect.width == 375 && rect.height == 812) {
