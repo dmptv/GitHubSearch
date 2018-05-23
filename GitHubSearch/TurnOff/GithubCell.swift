@@ -24,7 +24,7 @@ class GithubCell: UITableViewCell {
                 starCountLabel.text = "\(repo.stars!)"
                 
                 if let ownerAvatarURL = repo.ownerAvatarURL {
-                    authorImageView.downloadImage(from: ownerAvatarURL)
+                    _ = authorImageView.downloadImage(from: ownerAvatarURL)
                 }
             }
         }

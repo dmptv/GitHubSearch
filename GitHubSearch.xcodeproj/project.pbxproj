@@ -607,7 +607,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54D1711F31086F514DF49FE4 /* Pods-GitHubSearch.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YMNCUQG876;
 				INFOPLIST_FILE = GitHubSearch/Info.plist;
@@ -626,7 +626,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9E70D3E4692655FB2D27A4A8 /* Pods-GitHubSearch.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YMNCUQG876;
 				INFOPLIST_FILE = GitHubSearch/Info.plist;
