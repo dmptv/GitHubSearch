@@ -58,6 +58,7 @@
 		9DCB82BD20B4699900D822AF /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82BC20B4699900D822AF /* SearchCollectionViewController.swift */; };
 		9DCB82BF20B46A2300D822AF /* ShowCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */; };
 		9DCB82C220B491CC00D822AF /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82C120B491CC00D822AF /* Globals.swift */; };
+		9DCB82CA20B5871100D822AF /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCB82C920B5871100D822AF /* CustomImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -116,6 +117,7 @@
 		9DCB82BC20B4699900D822AF /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
 		9DCB82BE20B46A2300D822AF /* ShowCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCollectionCell.swift; sourceTree = "<group>"; };
 		9DCB82C120B491CC00D822AF /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		9DCB82C920B5871100D822AF /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		9E70D3E4692655FB2D27A4A8 /* Pods-GitHubSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-GitHubSearch/Pods-GitHubSearch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -229,6 +231,7 @@
 				9D9718E920B4527F006ED06C /* UIImage+resized.swift */,
 				9D9718ED20B465F8006ED06C /* Extentions.swift */,
 				9DCB82C120B491CC00D822AF /* Globals.swift */,
+				9DCB82C920B5871100D822AF /* CustomImageView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				9DCB82C220B491CC00D822AF /* Globals.swift in Sources */,
 				9DA3936A20B2C38900CEC2DF /* AppDelegate.swift in Sources */,
 				9D9718EC20B46103006ED06C /* NavigationController.swift in Sources */,
+				9DCB82CA20B5871100D822AF /* CustomImageView.swift in Sources */,
 				9D9718D520B439B3006ED06C /* DesignableButton.swift in Sources */,
 				9D97184320B2F6E0006ED06C /* GithubRouter.swift in Sources */,
 				9D9718D120B439B3006ED06C /* Misc.swift in Sources */,

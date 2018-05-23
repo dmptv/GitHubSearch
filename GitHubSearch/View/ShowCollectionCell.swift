@@ -11,35 +11,23 @@ import Alamofire
 
 class ShowCollectionCell: UICollectionViewCell {
     
-    @IBOutlet weak var ownerImage: UIImageView!
-    @IBOutlet weak var starsLabel: UILabel!
-    @IBOutlet weak var starMark: UIImageView!
+    @IBOutlet public weak var ownerImage: CustomImageView!
+    @IBOutlet public weak var starsLabel: UILabel!
+    @IBOutlet public weak var starMark: UIImageView!
     
     @IBOutlet weak var loadMoreLbl: UILabel!
     
-    private var urlString = ""
-    private var downloadTask: DataRequest?
-    private var imageViewTmp = UIImageView()
-    
-    var repo: GithubRepo? {
+    public var repo: GithubRepo? {
         didSet{
             if let repo = repo {
                 starsLabel.text = "\(repo.stars!)"
-                
-                downloadTask = imageViewTmp.downloadImage(from: repo.ownerAvatarURL!)
-                
-                //FIXME: - images not loading upon first page
-                if urlString == "" || urlString == repo.ownerAvatarURL! {
-                    if let img = ownerImage {
-                        img.image = nil
-                    }
-                    ownerImage.image = imageViewTmp.image
-                }
+                guard let avatarStrUrl  = repo.ownerAvatarURL else { return }
+                ownerImage.loadImage(urlString: avatarStrUrl)
             }
         }
     }
     
-    func reversViews(isLastItem: Bool) {
+    public func reversViews(isLastItem: Bool) {
         ownerImage.isHidden = isLastItem
         starsLabel.isHidden = isLastItem
         starMark.isHidden = isLastItem
@@ -49,14 +37,8 @@ class ShowCollectionCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-
     }
     
-}
-
-
-class CustomCollectionViewCell: UICollectionViewCell {
-    var urlString = ""
 }
 
 

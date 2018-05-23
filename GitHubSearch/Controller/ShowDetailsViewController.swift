@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 
 class ShowDetailsViewController: UIViewController {
-    @IBOutlet weak var repoImageView: UIImageView!
+    @IBOutlet weak var repoImageView: CustomImageView!
     @IBOutlet weak var repoName: UILabel!
     @IBOutlet weak var stars: UILabel!
     @IBOutlet weak var ownerName: UILabel!
@@ -47,7 +47,7 @@ class ShowDetailsViewController: UIViewController {
     
     private func populateView() {
         if let ownerAvatarURL = repo.ownerAvatarURL {
-            downloadTask = repoImageView.downloadImage(from: ownerAvatarURL)
+            repoImageView.loadImage(urlString: ownerAvatarURL)
         }
         
         repoName.text = repo.name

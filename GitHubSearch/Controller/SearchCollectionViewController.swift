@@ -18,7 +18,6 @@ class SearchCollectionViewController: UIViewController {
     var searchSettings = SearchResult()
     var seachingPage = 1
     var isBatchFetching = false
-    var requestCancelled = false
     
     var repos: [GithubRepo]! {
         didSet{
@@ -162,15 +161,17 @@ extension SearchCollectionViewController: UISearchBarDelegate {
             
             dataTask = Alamofire.request(GithubRouter.search(searchStr, seachingPage))
                 .responseJSON { [weak self] response in
+                    
+                    guard let strongSelf = self else { return }
+                    
                     guard response.result.isSuccess,
                         let value = response.result.value else {
-                            MBProgressHUD.hide(for: (self?.view!)!, animated: true)
+                            MBProgressHUD.hide(for: strongSelf.view!, animated: true)
                             
                             if (response.result.error! as NSError).code == -999 {
                                 printMine("request cancelled")
-                                self?.requestCancelled = true
-                                self?.isBatchFetching = false
-                                self?.dataTask?.cancel()
+                                strongSelf.isBatchFetching = false
+                                strongSelf.dataTask?.cancel()
                                 return
                             } else {
                                 networkError(response.result.error!)
@@ -178,7 +179,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                             return
                     }
                     
-                    if (self?.isBatchFetching)! {
+                    if strongSelf.isBatchFetching {
                         var fetchedRepos: [GithubRepo] = []
                         if let results = (value as! Json)["items"] as? [Json] {
                             fetchedRepos = results.compactMap { json in
@@ -186,25 +187,25 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         }
 
                         //TODO: - make a guard let
-                        self?.repos.append(contentsOf: fetchedRepos)
+                        strongSelf.repos.append(contentsOf: fetchedRepos)
                         
-                        //self?.repos.append(contentsOf: GithubRepo.mockData())
+                        //strongSelf.repos.append(contentsOf: GithubRepo.mockData())
                        
                     } else {
                         // first page
                         if let results = (value as! Json)["items"] as? [Json] {
-                            self?.repos = []
-                            self?.repos = results.compactMap { json in
+                            strongSelf.repos = []
+                            strongSelf.repos = results.compactMap { json in
                                 GithubRepo(jsonResult: json)
                             }
                             
-                            self?.isBatchFetching = true
-                            MBProgressHUD.hide(for: (self?.view!)!, animated: true)
+                            strongSelf.isBatchFetching = true
+                            MBProgressHUD.hide(for: strongSelf.view!, animated: true)
                         }
                     }
         
                     afterDelay(0.25, closure: {
-                        self?.collectionView.reloadData()
+                        strongSelf.collectionView.reloadData()
                     })
 
             }

@@ -157,7 +157,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C3O-xf-x66" customClass="SpringView" customModule="GitHubSearch" customModuleProvider="target">
                                 <rect key="frame" x="20" y="25" width="335" height="632"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SfV-7c-qju">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SfV-7c-qju" customClass="CustomImageView" customModule="GitHubSearch" customModuleProvider="target">
                                         <rect key="frame" x="16" y="30" width="105" height="130"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="105" id="P1l-wu-U2k"/>
@@ -310,7 +310,7 @@
                         <outlet property="containerView" destination="C3O-xf-x66" id="zEg-mq-HtU"/>
                         <outlet property="ownerName" destination="d2e-Ig-W55" id="8pW-oF-YhD"/>
                         <outlet property="repoDescription" destination="Zi8-8t-fYP" id="UO1-QM-nq4"/>
-                        <outlet property="repoImageView" destination="SfV-7c-qju" id="K43-Ty-Zko"/>
+                        <outlet property="repoImageView" destination="SfV-7c-qju" id="vJ7-b9-KFv"/>
                         <outlet property="repoName" destination="ruR-F6-Wub" id="Weg-X8-gYh"/>
                         <outlet property="saveBtn" destination="jvJ-kk-vuw" id="9hG-zB-WWf"/>
                         <outlet property="stars" destination="ny5-97-EIc" id="ze8-pF-vbz"/>
@@ -350,7 +350,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="130" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ytp-lv-wAV">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ytp-lv-wAV" customClass="CustomImageView" customModule="GitHubSearch" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="28" width="130" height="122"/>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="U2C-Cv-Bfo">
@@ -390,7 +390,7 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="loadMoreLbl" destination="tF8-sI-fpX" id="K1c-Qm-P3a"/>
-                                            <outlet property="ownerImage" destination="Ytp-lv-wAV" id="FBh-t4-c2s"/>
+                                            <outlet property="ownerImage" destination="Ytp-lv-wAV" id="i1i-tT-ufD"/>
                                             <outlet property="starMark" destination="NVN-lB-sLf" id="J8k-xl-P4W"/>
                                             <outlet property="starsLabel" destination="ZN1-uz-2FO" id="Xfm-oB-baT"/>
                                         </connections>
