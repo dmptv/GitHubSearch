@@ -67,7 +67,6 @@ class SearchCollectionViewController: UIViewController {
         searchBar.delegate = self
         searchBar.placeholder = "Search Top Repos"
         searchBar.backgroundColor = .mainBlue()
-        
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
     }
@@ -117,7 +116,7 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
     }
      
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if repos != nil && isBatchFetching && !requestCancelled {
+        if repos != nil {
             if indexPath.row == repos.count - 5 {
                 doSearch()
             }
@@ -148,7 +147,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         isBatchFetching = false
         dataTask?.cancel()
-        afterDelay(0) { [weak self] in 
+        afterDelay(0) { [weak self] in
             self?.progressHUD?.hide(animated: false)
         }
         doSearch()
@@ -177,7 +176,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                     }
             }
             
-            let query = searchStr.replacingOccurrences(of: " ", with: "%20")
+            let query = searchStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             dataTask = Alamofire.request(GithubRouter.search(query, seachingPage))
                 .responseJSON { [weak self] response in
                     
@@ -186,17 +185,15 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         strongSelf.progressHUD?.hide(animated: false)
                     })
 
-                    guard response.result.isSuccess,
-                        let value = response.result.value else {
-                            strongSelf.progressHUD?.hide(animated: false)
+                    guard response.result.isSuccess, let value = response.result.value
+                        else {
                             if (response.result.error! as NSError).code == -999 {
                                 printMine("request cancelled")
                                 return
                             } else {
                                 networkError(response.result.error!)
                             }
-                            return
-                    }
+                            return }
                     
                     if strongSelf.isBatchFetching {
                         var fetchedRepos: [GithubRepo] = []
@@ -208,13 +205,12 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         
                     } else {
                         // first page
+                        strongSelf.isBatchFetching = true
                         if let results = (value as! Json)["items"] as? [Json] {
                             strongSelf.repos = []
                             strongSelf.repos = results.compactMap { json in
                                 GithubRepo(jsonResult: json)
                             }
-                            
-                            strongSelf.isBatchFetching = true
                         }
                     }
         
