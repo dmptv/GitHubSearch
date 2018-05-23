@@ -370,6 +370,12 @@
                                                         <constraint firstAttribute="height" constant="20" id="bPW-gA-E7Q"/>
                                                     </constraints>
                                                 </stackView>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load More" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tF8-sI-fpX">
+                                                    <rect key="frame" x="16" y="64" width="98.5" height="23"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="19"/>
+                                                    <color key="textColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </view>
                                         <constraints>
@@ -378,10 +384,14 @@
                                             <constraint firstAttribute="trailing" secondItem="Ytp-lv-wAV" secondAttribute="trailing" id="GEL-8N-5yz"/>
                                             <constraint firstItem="Ytp-lv-wAV" firstAttribute="top" secondItem="U2C-Cv-Bfo" secondAttribute="bottom" constant="4" id="SFO-Ag-JhY"/>
                                             <constraint firstItem="U2C-Cv-Bfo" firstAttribute="centerX" secondItem="qtp-ul-VgY" secondAttribute="centerX" id="WEq-MR-9eK"/>
+                                            <constraint firstItem="tF8-sI-fpX" firstAttribute="centerY" secondItem="qtp-ul-VgY" secondAttribute="centerY" id="Z96-yr-UY9"/>
                                             <constraint firstItem="Ytp-lv-wAV" firstAttribute="leading" secondItem="qtp-ul-VgY" secondAttribute="leading" id="aP0-HY-Lsk"/>
+                                            <constraint firstItem="tF8-sI-fpX" firstAttribute="centerX" secondItem="qtp-ul-VgY" secondAttribute="centerX" id="b16-0M-vOD"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="loadMoreLbl" destination="tF8-sI-fpX" id="K1c-Qm-P3a"/>
                                             <outlet property="ownerImage" destination="Ytp-lv-wAV" id="FBh-t4-c2s"/>
+                                            <outlet property="starMark" destination="NVN-lB-sLf" id="J8k-xl-P4W"/>
                                             <outlet property="starsLabel" destination="ZN1-uz-2FO" id="Xfm-oB-baT"/>
                                         </connections>
                                     </collectionViewCell>

@@ -72,17 +72,24 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if repos != nil {
-            return repos.count
+            return repos.count + 1
         }
         
         return 0
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionShow", for: indexPath) as! ShowCollectionCell
         
-        cell.repo = repos[indexPath.row]
+        if indexPath.row == repos.count {
+            cell.reversViews(isLastItem: true)
+        } else {
+            if indexPath.item < repos.count {
+                cell.reversViews(isLastItem: false)
+                cell.repo = repos[indexPath.row]
+            }
+        }
         
         transform(cell: cell)
         return cell
@@ -95,22 +102,17 @@ extension SearchCollectionViewController: UICollectionViewDataSource {
 }
 
 extension SearchCollectionViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        if repos != nil && isBatchFetching && !requestCancelled {
-            if indexPath.row == repos.count - 1 {
-                doSearch()
-            }
-        }
-    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         searchBar.resignFirstResponder()
         
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
-        vc.repo = repos[indexPath.row]
-        self.present(vc, animated: false, completion: nil)
+        if indexPath.row == repos.count {
+            doSearch()
+        } else {
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "showDetails") as! ShowDetailsViewController
+            vc.repo = repos[indexPath.row]
+            self.present(vc, animated: false, completion: nil)
+        }
         
         collectionView.deselectItem(at: indexPath, animated: false)
     }
@@ -201,7 +203,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         }
                     }
         
-                    afterDelay(0.5, closure: {
+                    afterDelay(0.25, closure: {
                         self?.collectionView.reloadData()
                     })
 

@@ -13,10 +13,13 @@ class ShowCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var ownerImage: UIImageView!
     @IBOutlet weak var starsLabel: UILabel!
+    @IBOutlet weak var starMark: UIImageView!
     
-    var urlString = ""
-    fileprivate var downloadTask: DataRequest?
-    var imageViewTmp = UIImageView()
+    @IBOutlet weak var loadMoreLbl: UILabel!
+    
+    private var urlString = ""
+    private var downloadTask: DataRequest?
+    private var imageViewTmp = UIImageView()
     
     var repo: GithubRepo? {
         didSet{
@@ -25,6 +28,7 @@ class ShowCollectionCell: UICollectionViewCell {
                 
                 downloadTask = imageViewTmp.downloadImage(from: repo.ownerAvatarURL!)
                 
+                //FIXME: - images not loading upon first page
                 if urlString == "" || urlString == repo.ownerAvatarURL! {
                     if let img = ownerImage {
                         img.image = nil
@@ -35,11 +39,17 @@ class ShowCollectionCell: UICollectionViewCell {
         }
     }
     
+    func reversViews(isLastItem: Bool) {
+        ownerImage.isHidden = isLastItem
+        starsLabel.isHidden = isLastItem
+        starMark.isHidden = isLastItem
+        
+        loadMoreLbl.isHidden = !isLastItem
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-//        downloadTask?.cancel()
-//        downloadTask = nil
+
     }
     
 }
