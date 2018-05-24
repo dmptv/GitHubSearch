@@ -17,7 +17,7 @@ enum CustomError: Error {
 let NetworkErrorNotification = Notification.Name(rawValue:"NetworkErrorNotification")
 
 func networkError(_ error: Error) {
-    print("*** error: \(error)")
+    printMine("*** error: \(error)")
     NotificationCenter.default.post(name: NetworkErrorNotification, object: nil)
 }
 

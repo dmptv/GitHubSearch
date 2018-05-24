@@ -27,7 +27,7 @@ class CustomImageView: UIImageView {
         
         URLSession.shared.dataTask(with: url) { (data, response, err) in
             if let err = err {
-                print("Failed to fetch post image:", err)
+                printMine("Failed to fetch post image:", err)
                 return
             }
             

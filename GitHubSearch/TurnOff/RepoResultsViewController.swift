@@ -41,7 +41,7 @@ class RepoResultsViewController: UIViewController {
     fileprivate var dataTask: DataRequest? = nil
     
     deinit {
-        print("deinited: \(self)")
+        printMine("deinited: \(self)")
     }
     
     override func viewDidLoad() {
@@ -167,9 +167,9 @@ extension RepoResultsViewController: UISearchBarDelegate {
                     guard response.result.isSuccess,
                         let value = response.result.value else {
                             if (response.result.error! as NSError).code == -999 {
-                                print("request cancelled")
+                                printMine("request cancelled")
                             } else {
-                                print("Error while fetching: \(String(describing: response.result.error))")
+                                printMine("Error while fetching: \(String(describing: response.result.error))")
                             }
                             return
                     }

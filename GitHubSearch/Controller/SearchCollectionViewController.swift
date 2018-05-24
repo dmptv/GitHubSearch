@@ -119,7 +119,6 @@ extension SearchCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if repos != nil && isBatchFetching && repos.count >= 1 {
             if indexPath.row == repos.count - 1 {
-                printMine("willDisplay")
                 doSearch()
             }
         }
@@ -182,7 +181,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                     }
             }
             
-            printMine("seachingPage = ", seachingPage)
+            printMine("--- seachingPage = ", seachingPage)
             
             let query = searchStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             dataTask = Alamofire.request(GithubRouter.search(query, seachingPage))
@@ -206,14 +205,17 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                     }
 
                     if let code = response.response, code.statusCode == 403 {
-                        printMine("403")
+                        printMine("--- 403")
+                        if strongSelf.seachingPage != 1 {
+                            strongSelf.seachingPage -= 1
+                        }
                         return
                     }
 
                     guard response.result.isSuccess, let value = response.result.value
                         else {
                             if (response.result.error! as NSError).code == -999 {
-                                printMine("request cancelled")
+                                printMine("--- request cancelled")
                                 strongSelf.requestCancelled = true
                                 return
                             } else {
@@ -240,7 +242,7 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                         }
                     }
         
-                    afterDelay(0.25, closure: {
+                    afterDelay(0, closure: {
                         strongSelf.collectionView.reloadData()
                     })
             }
